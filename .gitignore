@@ -57,6 +57,12 @@ typings/
 # dotenv environment variables file
 .env
 
-dist
-dist6
+# Transpiled JavaScript files from Typescript
+/dist
 
+# Cache used by TypeScript's incremental build
+*.tsbuildinfo
+
+# Lock Files
+package-lock.json
+yarn.lock

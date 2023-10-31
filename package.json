@@ -1,30 +1,32 @@
 {
   "name": "@loopback/mqtt",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "MQTT extension for LoopBack 4",
   "keywords": [
     "loopback-extension",
     "loopback"
   ],
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "engines": {
-    "node": ">=8"
+    "node": "14 || 16 || 17 || 18"
   },
   "scripts": {
-    "build": "lb-tsc es2017",
-    "build:watch": "lb-tsc es2017 --watch",
-    "clean": "lb-clean",
-    "lint": "npm run prettier:check && npm run tslint",
-    "lint:fix": "npm run prettier:fix && npm run tslint:fix",
+    "build": "lb-tsc",
+    "build:watch": "lb-tsc --watch",
+    "lint": "npm run eslint && npm run prettier:check",
+    "lint:fix": "npm run eslint:fix && npm run prettier:fix",
     "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
     "prettier:check": "npm run prettier:cli -- -l",
     "prettier:fix": "npm run prettier:cli -- --write",
-    "tslint": "lb-tslint",
-    "tslint:fix": "npm run tslint -- --fix",
-    "pretest": "npm run clean && npm run build",
-    "test": "lb-dist mocha DIST/test",
+    "eslint": "lb-eslint --report-unused-disable-directives .",
+    "eslint:fix": "npm run eslint -- --fix",
+    "pretest": "npm run rebuild",
+    "test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
     "posttest": "npm run lint",
-    "prepare": "npm run build"
+    "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
+    "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
+    "rebuild": "npm run clean && npm run build"
   },
   "repository": {
     "type": "git",
@@ -34,16 +36,24 @@
   "license": "MIT",
   "files": [
     "README.md",
-    "index.js",
-    "index.d.ts",
-    "dist"
+    "dist",
+    "src",
+    "!*/__tests__"
   ],
+  "peerDependencies": {
+    "@loopback/core": "^4.0.0"
+  },
   "dependencies": {
-    "@loopback/context": "^4.0.0-alpha.31",
-    "@loopback/core": "^4.0.0-alpha.33"
+    "tslib": "^2.0.0"
   },
   "devDependencies": {
-    "@loopback/build": "^4.0.0-alpha.13",
-    "@loopback/testlab": "^4.0.0-alpha.23"
+    "@loopback/build": "^9.0.0",
+    "source-map-support": "^0.5.21",
+    "@loopback/core": "^4.0.0",
+    "@loopback/testlab": "^5.0.0",
+    "@types/node": "^12.20.50",
+    "@loopback/eslint-config": "^13.0.0",
+    "eslint": "^8.14.0",
+    "typescript": "~4.6.4"
   }
 }
